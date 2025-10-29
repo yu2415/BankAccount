@@ -23,10 +23,15 @@ namespace ConsoleBanca
                 Console.WriteLine("═════════════════════════════════════════════════════════════════════");
                 Console.ResetColor();
 
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n1️⃣  Accesso UTENTE");
                 Console.WriteLine("2️⃣  Accesso ADMIN");
                 Console.WriteLine("3️⃣  Esci dal programma");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("\n👉 Scelta: ");
+                Console.ResetColor();
                 string scelta = Console.ReadLine();
 
                 switch (scelta)
@@ -38,10 +43,14 @@ namespace ConsoleBanca
                         MenuAdmin(); // Vai al menu admin
                         break;
                     case "3":
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("\n👋 Uscita dal programma...");
-                        return; // Termina il programma
+                        Console.ResetColor();
+                        return;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("⚠️ Scelta non valida. Riprova.");
+                        Console.ResetColor();
                         break;
                 }
             }
@@ -60,48 +69,75 @@ namespace ConsoleBanca
             // 🔐 Verifica password admin
             Console.Write("Inserisci password admin: ");
             string pwd = Console.ReadLine();
-            if (pwd != "admin123")
+
+            string passwordAdmin = FileManager.LeggiPasswordAdmin();
+            Console.WriteLine($"DEBUG: Password admin letta = '{passwordAdmin}'");  // solo per debug
+
+            if (pwd != passwordAdmin)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("❌ Password errata!");
+                Console.ResetColor();
                 return;
             }
+
 
             // 🔁 Menu Admin
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n--- MENU ADMIN ---");
+                Console.ResetColor();
+
                 Console.WriteLine("1. Crea nuovo conto");
                 Console.WriteLine("2. Approva richieste prestiti");
-                Console.WriteLine("3. Torna al menu principale");
-                Console.Write("Scelta: ");
+                Console.WriteLine("3. Cambia password admin");
+                Console.WriteLine("4. Torna al menu principale");
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.Write("👉 Scelta: ");
+                Console.ResetColor();
                 string scelta = Console.ReadLine();
 
                 switch (scelta)
                 {
                     case "1":
-                        Console.Write("Nome: ");
-                        string nome = Console.ReadLine();
-                        Console.Write("Cognome: ");
-                        string cognome = Console.ReadLine();
-                        Console.Write("Imposta password per il conto: ");
-                        string password = Console.ReadLine();
-
-                        // 🆕 Crea nuovo conto bancario
-                        ContoBancario nuovo = new ContoBancario($"{nome} {cognome}", password);
-                        FileManager.SalvaConto(nuovo); // Salva il conto su Desktop
-                        Console.WriteLine($"✅ Conto creato: {nuovo._numeroConto}");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("🧾 Creazione conto non ancora implementata...");
+                        Console.ResetColor();
                         break;
 
                     case "2":
-                        FileManager.ApprovaPrestiti(); // Gestisce prestiti pendenti
+                        FileManager.GestisciPrestiti();
                         break;
 
                     case "3":
+                        Console.Write("Inserisci la nuova password admin: ");
+                        string nuovaPwd = Console.ReadLine();
+                        try
+                        {
+                            FileManager.CambiaPasswordAdmin(nuovaPwd);
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("✅ Password admin cambiata con successo!");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"❌ Errore: {ex.Message}");
+                        }
+                        Console.ResetColor();
+                        break;
+
+                    case "4":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("👋 Uscita dalla modalità admin...");
-                        return; // Torna al menu principale
+                        Console.ResetColor();
+                        return;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine("⚠️ Scelta non valida.");
+                        Console.ResetColor();
                         break;
                 }
             }
@@ -117,25 +153,65 @@ namespace ConsoleBanca
             Console.WriteLine("═════════════════════════════════════════════════════════════════════");
             Console.ResetColor();
 
-            Console.Write("Inserisci il numero del conto (es. IT1000000000): ");
-            string numero = Console.ReadLine();
-            Console.Write("Inserisci la password: ");
-            string password = Console.ReadLine();
+            Console.Write("Inserisci il tuo nome e cognome: ");
+            string nomeCompleto = Console.ReadLine();
 
-            // 🔍 Carica il conto da file
-            ContoBancario conto = FileManager.CaricaConto(numero, password);
-            if (conto == null)
+            var conti = FileManager.TrovaContiPerIntestatario(nomeCompleto);
+
+            if (conti.Count == 0)
             {
-                Console.WriteLine("❌ Credenziali errate o conto non trovato.");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("❌ Nessun conto trovato per questo intestatario.");
+                Console.ResetColor();
                 return;
             }
 
+            string numeroConto;
+            if (conti.Count == 1)
+            {
+                numeroConto = conti[0];
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"✅ Trovato un conto: {numeroConto}");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Trovati più conti. Scegli quale aprire:");
+                Console.ResetColor();
+                for (int i = 0; i < conti.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {conti[i]}");
+                }
+
+                Console.Write("👉 Scelta: ");
+                int scelta = Convert.ToInt32(Console.ReadLine());
+                numeroConto = conti[scelta - 1];
+            }
+
+            Console.Write("Inserisci la password: ");
+            string password = Console.ReadLine();
+
+            ContoBancario conto = FileManager.CaricaConto(nomeCompleto, numeroConto, password);
+            if (conto == null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("❌ Credenziali errate o conto non trovato.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\n👋 Benvenuto {conto._intestatario}!");
+            Console.ResetColor();
 
             // 🔁 Menu utente
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("\n--- MENU UTENTE ---");
+                Console.ResetColor();
+
                 Console.WriteLine("1. Visualizza saldo");
                 Console.WriteLine("2. Deposita denaro");
                 Console.WriteLine("3. Preleva denaro");
@@ -143,7 +219,10 @@ namespace ConsoleBanca
                 Console.WriteLine("5. Richiedi prestito");
                 Console.WriteLine("6. Modifica password");
                 Console.WriteLine("7. Torna al menu principale");
+
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.Write("Scelta: ");
+                Console.ResetColor();
 
                 string scelta = Console.ReadLine();
 
@@ -152,6 +231,7 @@ namespace ConsoleBanca
                     switch (scelta)
                     {
                         case "1":
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"💰 Saldo attuale: {conto._saldo} euro");
                             break;
 
@@ -162,6 +242,7 @@ namespace ConsoleBanca
                             string descDep = Console.ReadLine();
                             conto.Deposita(dep, descDep);
                             FileManager.SalvaConto(conto);
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("✅ Deposito salvato.");
                             break;
 
@@ -172,10 +253,12 @@ namespace ConsoleBanca
                             string descPre = Console.ReadLine();
                             conto.Preleva(pre, descPre);
                             FileManager.SalvaConto(conto);
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("✅ Prelievo registrato.");
                             break;
 
                         case "4":
+                            Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.WriteLine(conto.StoricoOperazioni());
                             break;
 
@@ -183,7 +266,8 @@ namespace ConsoleBanca
                             Console.Write("Importo del prestito richiesto: ");
                             double importo = Convert.ToDouble(Console.ReadLine());
                             Prestito p = new Prestito(conto._numeroConto, importo, false);
-                            FileManager.SalvaRichiestaPrestito(p);
+                            FileManager.SalvaRichiestaPrestito(p, conto._intestatario);
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("📨 Richiesta prestito inviata all’admin.");
                             break;
 
@@ -192,21 +276,28 @@ namespace ConsoleBanca
                             string nuovaPwd = Console.ReadLine();
                             conto.CambiaPassword(nuovaPwd);
                             FileManager.SalvaConto(conto);
+                            Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("✅ Password modificata con successo.");
                             break;
 
                         case "7":
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("👋 Torno al menu principale...");
+                            Console.ResetColor();
                             return;
 
                         default:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("⚠️ Opzione non valida.");
                             break;
                     }
+                    Console.ResetColor();
                 }
                 catch (Exception ex)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"❌ Errore: {ex.Message}");
+                    Console.ResetColor();
                 }
             }
         }
