@@ -4,20 +4,22 @@ namespace Banca
 {
     public class Prestito
     {
-        public string NumeroConto { get; set; }
-        public double Importo { get; set; }
-        public bool Approvato { get; set; }
+        
+            public string _numeroConto { get; private set; }
+            public double _importo { get; private set; }
+            public bool _approvato { get; set; }
 
-        public Prestito(string numeroConto, double importo, bool approvato)
-        {
-            NumeroConto = numeroConto;
-            Importo = importo;
-            Approvato = approvato;
-        }
+            public Prestito(string numeroConto, double importo, bool approvato)
+            {
+                _numeroConto = numeroConto;
+                _importo = importo;
+                _approvato = approvato;
+            }
+
 
         public override string ToString()
         {
-            return $"{NumeroConto}|{Importo}|{Approvato}";
+            return $"{_numeroConto}|{_importo}|{_approvato}";
         }
 
         public static Prestito Parse(string line)

@@ -1,26 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\",
+  "WorkspaceRootPath": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\ba\\bankaccount\\bankaccount.cs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\gf\\bankaccount\\bankaccount.cs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\ba\\bankaccount\\bankaccount.cs\\filemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\filemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\ba\\bankaccount\\bankaccount.cs\\prestito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\prestito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\ba\\bankaccount\\bankaccount.cs\\transazione.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\gf\\bankaccount\\bankaccount.cs\\transazione.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\transazione.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\ba\\bankaccount\\bankaccount.cs\\contobancario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\gf\\bankaccount\\bankaccount.cs\\prestito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\prestito.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\gf\\bankaccount\\bankaccount.cs\\contobancario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\contobancario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|c:\\users\\lorenzo.baravelli\\desktop\\gf\\bankaccount\\bankaccount.cs\\filemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A14D6821-2117-4063-8991-AC7255703FE4}|BankAccount.cs\\BankAccount.cs.csproj|solutionrelative:bankaccount.cs\\filemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -36,50 +36,50 @@
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "Prestito.cs",
-              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Prestito.cs",
+              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Prestito.cs",
               "RelativeDocumentMoniker": "BankAccount.cs\\Prestito.cs",
-              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Prestito.cs",
+              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Prestito.cs",
               "RelativeToolTip": "BankAccount.cs\\Prestito.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAwB0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-27T07:48:58.997Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "FileManager.cs",
-              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\FileManager.cs",
+              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\FileManager.cs",
               "RelativeDocumentMoniker": "BankAccount.cs\\FileManager.cs",
-              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\FileManager.cs",
+              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\FileManager.cs",
               "RelativeToolTip": "BankAccount.cs\\FileManager.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAqwIQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAUwHQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-27T07:46:35.404Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Transazione.cs",
-              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Transazione.cs",
+              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Transazione.cs",
               "RelativeDocumentMoniker": "BankAccount.cs\\Transazione.cs",
-              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Transazione.cs",
+              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Transazione.cs",
               "RelativeToolTip": "BankAccount.cs\\Transazione.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T07:27:36.401Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "ContoBancario.cs",
-              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\ContoBancario.cs",
+              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\ContoBancario.cs",
               "RelativeDocumentMoniker": "BankAccount.cs\\ContoBancario.cs",
-              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\ContoBancario.cs",
+              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\ContoBancario.cs",
               "RelativeToolTip": "BankAccount.cs\\ContoBancario.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAqwEYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAkwGwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T07:27:07.141Z",
               "EditorCaption": ""
@@ -88,11 +88,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Program.cs",
               "RelativeDocumentMoniker": "BankAccount.cs\\Program.cs",
-              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\BA\\BankAccount\\BankAccount.cs\\Program.cs",
+              "ToolTip": "C:\\Users\\lorenzo.baravelli\\Desktop\\GF\\BankAccount\\BankAccount.cs\\Program.cs",
               "RelativeToolTip": "BankAccount.cs\\Program.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAwwBsAAAAEAAAAAAAAAA==",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAAALsAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-08T06:20:26.175Z",
               "EditorCaption": ""

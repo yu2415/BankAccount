@@ -1,32 +1,30 @@
-﻿using System;
+﻿using System;   // Importa il namespace System (DateTime, ecc.)
 
 namespace Banca
 {
-    public class Transazione
+    public class Transazione   // Definisce la classe Transazione
     {
-        public double _importo { get; }
-        public DateTime _data { get; }
-        public string _descrizione { get; }
+        public double _importo;          // Importo della transazione (positivo o negativo)
+        public DateTime _data;           // Data e ora della transazione
+        public string _descrizione;      // Descrizione della transazione
 
+        // ================================================================
+        // COSTRUTTORE
+        // ================================================================
         public Transazione(double importo, DateTime data, string descrizione)
         {
-            _importo = importo;
-            _data = data;
-            _descrizione = descrizione;
+            _importo = importo;           // Imposta l'importo
+            _data = data;                 // Imposta la data
+            _descrizione = descrizione;   // Imposta la descrizione
         }
 
+        // ================================================================
+        // METODO → Visualizza la transazione come stringa
+        // ================================================================
         public override string ToString()
         {
-            return $"{_data:dd/MM/yyyy}|{_importo}|{_descrizione}";
-        }
-
-        public static Transazione Parse(string line)
-        {
-            var p = line.Split('|');
-            double importo = double.Parse(p[1]);
-            DateTime data = DateTime.Parse(p[0]);
-            string descr = p.Length > 2 ? p[2] : "";
-            return new Transazione(importo, data, descr);
+            // Restituisce una stringa leggibile con importo, data e descrizione
+            return $"{_data:yyyy-MM-dd HH:mm:ss} | {_importo} € | {_descrizione}";
         }
     }
 }

@@ -4,48 +4,60 @@ using Banca;
 
 namespace ConsoleBanca
 {
-    /*
-     Ogni conto ha una password (salvata nel file .txt del conto).
-
-    Si può accedere solo inserendo numero conto + password corretta.
-
-    L’admin ha la sua password fissa (es. admin123).
-
-    Tutto viene salvato e caricato tramite StreamReader/StreamWriter in .txt.
-
-    Nessun errore di parametri o costruttori: tutto compila.
-     */
-
-    /*
-     Program.cs → gestisce login admin/utente
-
-    ContoBancario.cs → rappresenta un conto (ora ha anche Password)
-
-    Transazione.cs → rappresenta una singola transazione
-
-    Prestito.cs → rappresenta una richiesta di prestito
-
-    FileManager.cs → salva/carica i conti e i prestiti (.txt)
-     */
     class Program
     {
         static void Main()
         {
-            Directory.CreateDirectory("Conti"); // cartella per i file .txt
+            // 📁 Crea la cartella "Conti" sul Desktop se non esiste
+            Directory.CreateDirectory(
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Conti")
+            );
 
-            Console.WriteLine("🏦 Benvenuto nella Banca Digitale!");
-            Console.Write("Sei un (1) Utente o (2) Admin? ");
-            string ruolo = Console.ReadLine();
+            // 🔁 Ciclo infinito che permette di passare da Admin a Utente senza chiudere la console
+            while (true)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+                Console.WriteLine("🏦 BENVENUTO NELLA BANCA DIGITALE 🏦");
+                Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+                Console.ResetColor();
 
-            if (ruolo == "2")
-                MenuAdmin();
-            else
-                MenuUtente();
+                Console.WriteLine("\n1️⃣  Accesso UTENTE");
+                Console.WriteLine("2️⃣  Accesso ADMIN");
+                Console.WriteLine("3️⃣  Esci dal programma");
+                Console.Write("\n👉 Scelta: ");
+                string scelta = Console.ReadLine();
+
+                switch (scelta)
+                {
+                    case "1":
+                        MenuUtente(); // Vai al menu utente
+                        break;
+                    case "2":
+                        MenuAdmin(); // Vai al menu admin
+                        break;
+                    case "3":
+                        Console.WriteLine("\n👋 Uscita dal programma...");
+                        return; // Termina il programma
+                    default:
+                        Console.WriteLine("⚠️ Scelta non valida. Riprova.");
+                        break;
+                }
+            }
         }
 
         // -------------------- MENU ADMIN --------------------
         static void MenuAdmin()
         {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.WriteLine("                     👑  MODALITÀ ADMINISTRATORE  👑");
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.ResetColor();
+
+            // 🔐 Verifica password admin
             Console.Write("Inserisci password admin: ");
             string pwd = Console.ReadLine();
             if (pwd != "admin123")
@@ -54,12 +66,13 @@ namespace ConsoleBanca
                 return;
             }
 
+            // 🔁 Menu Admin
             while (true)
             {
                 Console.WriteLine("\n--- MENU ADMIN ---");
                 Console.WriteLine("1. Crea nuovo conto");
                 Console.WriteLine("2. Approva richieste prestiti");
-                Console.WriteLine("3. Esci");
+                Console.WriteLine("3. Torna al menu principale");
                 Console.Write("Scelta: ");
                 string scelta = Console.ReadLine();
 
@@ -73,21 +86,22 @@ namespace ConsoleBanca
                         Console.Write("Imposta password per il conto: ");
                         string password = Console.ReadLine();
 
+                        // 🆕 Crea nuovo conto bancario
                         ContoBancario nuovo = new ContoBancario($"{nome} {cognome}", password);
-                        FileManager.SalvaConto(nuovo);
+                        FileManager.SalvaConto(nuovo); // Salva il conto su Desktop
                         Console.WriteLine($"✅ Conto creato: {nuovo._numeroConto}");
                         break;
 
                     case "2":
-                        FileManager.ApprovaPrestiti();
+                        FileManager.ApprovaPrestiti(); // Gestisce prestiti pendenti
                         break;
 
                     case "3":
-                        Console.WriteLine("👋 Logout Admin.");
-                        return;
+                        Console.WriteLine("👋 Uscita dalla modalità admin...");
+                        return; // Torna al menu principale
 
                     default:
-                        Console.WriteLine("❌ Scelta non valida.");
+                        Console.WriteLine("⚠️ Scelta non valida.");
                         break;
                 }
             }
@@ -96,11 +110,19 @@ namespace ConsoleBanca
         // -------------------- MENU UTENTE --------------------
         static void MenuUtente()
         {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.WriteLine("                         💳  MODALITÀ BANCA UTENTE  💳");
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.ResetColor();
+
             Console.Write("Inserisci il numero del conto (es. IT1000000000): ");
             string numero = Console.ReadLine();
             Console.Write("Inserisci la password: ");
             string password = Console.ReadLine();
 
+            // 🔍 Carica il conto da file
             ContoBancario conto = FileManager.CaricaConto(numero, password);
             if (conto == null)
             {
@@ -108,8 +130,9 @@ namespace ConsoleBanca
                 return;
             }
 
-            Console.WriteLine($"\nBenvenuto {conto._intestatario}!");
+            Console.WriteLine($"\n👋 Benvenuto {conto._intestatario}!");
 
+            // 🔁 Menu utente
             while (true)
             {
                 Console.WriteLine("\n--- MENU UTENTE ---");
@@ -118,7 +141,8 @@ namespace ConsoleBanca
                 Console.WriteLine("3. Preleva denaro");
                 Console.WriteLine("4. Storico operazioni");
                 Console.WriteLine("5. Richiedi prestito");
-                Console.WriteLine("6. Esci");
+                Console.WriteLine("6. Modifica password");
+                Console.WriteLine("7. Torna al menu principale");
                 Console.Write("Scelta: ");
 
                 string scelta = Console.ReadLine();
@@ -164,7 +188,15 @@ namespace ConsoleBanca
                             break;
 
                         case "6":
-                            Console.WriteLine("👋 Logout utente.");
+                            Console.Write("🔐 Inserisci la nuova password: ");
+                            string nuovaPwd = Console.ReadLine();
+                            conto.CambiaPassword(nuovaPwd);
+                            FileManager.SalvaConto(conto);
+                            Console.WriteLine("✅ Password modificata con successo.");
+                            break;
+
+                        case "7":
+                            Console.WriteLine("👋 Torno al menu principale...");
                             return;
 
                         default:

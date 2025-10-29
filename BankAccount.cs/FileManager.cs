@@ -1,132 +1,116 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Collections.Generic;
+using Banca;
+using System.Globalization;
 
-namespace Banca
+namespace ConsoleBanca
 {
     public static class FileManager
     {
-        private static string folderPath = "Conti";
-        private static string filePrestiti = "RichiestePrestiti.txt";
+        static string cartellaConti = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Conti");
 
-        // Salva conto in file .txt
+        // Salva un conto bancario su file
         public static void SalvaConto(ContoBancario conto)
         {
-            string path = Path.Combine(folderPath, $"Conto_{conto._numeroConto}.txt");
+            Directory.CreateDirectory(cartellaConti); // Assicurati che la cartella esista
 
-            using (StreamWriter writer = new StreamWriter(path, false))
+            string percorso = Path.Combine(cartellaConti, conto._numeroConto + ".txt");
+            using (StreamWriter sw = new StreamWriter(percorso))
             {
-                writer.WriteLine($"Intestatario:{conto._intestatario}");
-                writer.WriteLine($"NumeroConto:{conto._numeroConto}");
-                writer.WriteLine($"Password:{conto.Password}");
-                writer.WriteLine("TRANSAZIONI_START");
+                sw.WriteLine(conto._intestatario);
+                sw.WriteLine(conto._numeroConto);
+                sw.WriteLine(conto.Password);
 
+                // Salva le transazioni
                 foreach (var t in conto._transazioni)
-                    writer.WriteLine(t.ToString());
-
-                writer.WriteLine("TRANSAZIONI_END");
+                {
+                    sw.WriteLine($"{t._data.Ticks}|{t._importo.ToString(CultureInfo.InvariantCulture)}|{t._descrizione}");
+                }
             }
         }
 
-        // Carica conto se numero e password corrispondono
+        // Carica un conto bancario da file
         public static ContoBancario CaricaConto(string numeroConto, string password)
         {
-            string path = Path.Combine(folderPath, $"Conto_{numeroConto}.txt");
-            if (!File.Exists(path))
+            string percorso = Path.Combine(cartellaConti, numeroConto + ".txt");
+            if (!File.Exists(percorso))
                 return null;
 
-            string intestatario = "";
-            string storedPwd = "";
-            var transazioni = new List<Transazione>();
+            string[] righe = File.ReadAllLines(percorso);
+            if (righe.Length < 3)
+                return null;
 
-            using (StreamReader reader = new StreamReader(path))
+            string intestatario = righe[0];
+            string numero = righe[1];
+            string pwd = righe[2];
+
+            if (pwd != password)
+                return null;
+
+            ContoBancario conto = new ContoBancario(intestatario, numero, pwd);
+
+            // Carica tutte le transazioni
+            for (int i = 3; i < righe.Length; i++)
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                string[] parti = righe[i].Split('|');
+                if (parti.Length == 3)
                 {
-                    if (line.StartsWith("Intestatario:"))
-                        intestatario = line.Substring("Intestatario:".Length);
-                    else if (line.StartsWith("NumeroConto:"))
-                        numeroConto = line.Substring("NumeroConto:".Length);
-                    else if (line.StartsWith("Password:"))
-                        storedPwd = line.Substring("Password:".Length);
-                    else if (line == "TRANSAZIONI_START")
-                        continue;
-                    else if (line == "TRANSAZIONI_END")
-                        break;
-                    else if (!string.IsNullOrWhiteSpace(line))
-                        transazioni.Add(Transazione.Parse(line));
+                    DateTime data = new DateTime(long.Parse(parti[0]));
+                    double importo = double.Parse(parti[1], CultureInfo.InvariantCulture);
+                    string descrizione = parti[2];
+
+                    conto.AggiungiTransazioneDaFile(importo, data, descrizione);
                 }
             }
 
-            if (storedPwd != password)
-                return null;
-
-            ContoBancario conto = new ContoBancario(intestatario, numeroConto, storedPwd);
-            conto._transazioni.AddRange(transazioni);
             return conto;
         }
 
-        public static void SalvaRichiestaPrestito(Prestito p)
+        // Salva una richiesta di prestito su file
+        public static void SalvaRichiestaPrestito(Prestito prestito)
         {
-            using (StreamWriter writer = new StreamWriter(filePrestiti, append: true))
-                writer.WriteLine(p.ToString());
+            Directory.CreateDirectory(cartellaConti);
+
+            string percorso = Path.Combine(cartellaConti, "Prestiti.txt");
+            using (StreamWriter sw = File.AppendText(percorso))
+            {
+                sw.WriteLine($"{prestito._numeroConto}|{prestito._importo.ToString(CultureInfo.InvariantCulture)}|{prestito._approvato}");
+            }
         }
 
+        // Approva tutte le richieste di prestito pendenti
         public static void ApprovaPrestiti()
         {
-            if (!File.Exists(filePrestiti))
+            string percorso = Path.Combine(cartellaConti, "Prestiti.txt");
+            if (!File.Exists(percorso))
             {
-                Console.WriteLine("📂 Nessuna richiesta trovata.");
+                Console.WriteLine("Nessuna richiesta di prestito trovata.");
                 return;
             }
 
-            var prestiti = File.ReadAllLines(filePrestiti)
-                .Where(l => !string.IsNullOrWhiteSpace(l))
-                .Select(Prestito.Parse)
-                .ToList();
+            string[] righe = File.ReadAllLines(percorso);
+            File.Delete(percorso); // Cancella richieste dopo approvazione
 
-            foreach (var p in prestiti)
+            foreach (string riga in righe)
             {
-                if (!p.Approvato)
-                {
-                    Console.WriteLine($"Richiesta conto {p.NumeroConto}: {p.Importo} euro");
-                    Console.Write("Approvare? (s/n): ");
-                    string risposta = Console.ReadLine();
+                string[] parti = riga.Split('|');
+                if (parti.Length < 2) continue;
 
-                    if (risposta.ToLower() == "s")
-                    {
-                        p.Approvato = true;
-                        ContoBancario c = CaricaConto(p.NumeroConto, CaricaPassword(p.NumeroConto));
-                        if (c != null)
-                        {
-                            c.Deposita(p.Importo, "Prestito approvato");
-                            SalvaConto(c);
-                            Console.WriteLine("✅ Prestito approvato e fondi aggiunti.");
-                        }
-                    }
+                string numeroConto = parti[0];
+                double importo = double.Parse(parti[1], CultureInfo.InvariantCulture);
+
+                // Leggi la password direttamente dal file
+                string pwd = File.ReadAllLines(Path.Combine(cartellaConti, numeroConto + ".txt"))[2];
+                ContoBancario conto = CaricaConto(numeroConto, pwd);
+
+                if (conto != null)
+                {
+                    conto.Deposita(importo, "Prestito approvato");
+                    SalvaConto(conto);
+                    Console.WriteLine($"✅ Prestito approvato per conto {numeroConto}: {importo} euro");
                 }
             }
-
-            using (StreamWriter writer = new StreamWriter(filePrestiti, false))
-            {
-                foreach (var p in prestiti)
-                    writer.WriteLine(p.ToString());
-            }
-        }
-
-        // metodo di supporto per leggere la password da file conto
-        private static string CaricaPassword(string numeroConto)
-        {
-            string path = Path.Combine(folderPath, $"Conto_{numeroConto}.txt");
-            if (!File.Exists(path)) return "";
-
-            foreach (var line in File.ReadAllLines(path))
-                if (line.StartsWith("Password:"))
-                    return line.Substring("Password:".Length);
-
-            return "";
         }
     }
 }
