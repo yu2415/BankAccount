@@ -59,6 +59,7 @@ namespace ConsoleBanca
         }
 
         // Salva un conto bancario su file (in cartella personale)
+        // ===================== SALVATAGGIO CONTO =====================
         public static void SalvaConto(ContoBancario conto)
         {
             Directory.CreateDirectory(cartellaConti);
@@ -71,10 +72,12 @@ namespace ConsoleBanca
                 sw.WriteLine(conto._numeroConto);
                 sw.WriteLine(conto.Password);
 
+                // Ora la data è in formato leggibile
                 foreach (var t in conto._transazioni)
-                    sw.WriteLine($"{t._data.Ticks}|{t._importo.ToString(CultureInfo.InvariantCulture)}|{t._descrizione}");
+                    sw.WriteLine($"{t._data:dd/MM/yyyy HH:mm:ss}|{t._importo.ToString(CultureInfo.InvariantCulture)}|{t._descrizione}");
             }
         }
+
 
         public static ContoBancario CreaNuovoConto(string intestatario, string passwordIniziale)
         {
@@ -119,15 +122,50 @@ namespace ConsoleBanca
                 string[] parti = righe[i].Split('|');
                 if (parti.Length == 3)
                 {
-                    DateTime data = new DateTime(long.Parse(parti[0]));
-                    double importo = double.Parse(parti[1], CultureInfo.InvariantCulture);
-                    string descrizione = parti[2];
-                    conto.AggiungiTransazioneDaFile(importo, data, descrizione);
+                    // Converte da stringa leggibile a DateTime
+                    if (DateTime.TryParseExact(parti[0], "dd/MM/yyyy HH:mm:ss",
+                                               CultureInfo.InvariantCulture,
+                                               DateTimeStyles.None, out DateTime data))
+                    {
+                        double importo = double.Parse(parti[1], CultureInfo.InvariantCulture);
+                        string descrizione = parti[2];
+                        conto.AggiungiTransazioneDaFile(importo, data, descrizione);
+                    }
                 }
             }
 
+
             return conto;
         }
+
+        // ===================== ELIMINA CONTO O CLIENTE =====================
+        public static void EliminaConto(string intestatario, string numeroConto)
+        {
+            string cartellaCliente = Path.Combine(cartellaConti, intestatario);
+            string percorso = Path.Combine(cartellaCliente, numeroConto + ".txt");
+
+            if (File.Exists(percorso))
+            {
+                File.Delete(percorso);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"✅ Conto {numeroConto} di {intestatario} eliminato con successo.");
+                Console.ResetColor();
+
+                // Se non ci sono più conti, eliminiamo anche la cartella cliente
+                if (Directory.GetFiles(cartellaCliente, "IT*.txt").Length == 0)
+                {
+                    Directory.Delete(cartellaCliente, true);
+                    Console.WriteLine($"🗑️ Cartella del cliente {intestatario} rimossa (nessun conto residuo).");
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("❌ Conto non trovato.");
+                Console.ResetColor();
+            }
+        }
+
 
         // Trova tutti i conti di un intestatario
         public static List<string> TrovaContiPerIntestatario(string intestatario)

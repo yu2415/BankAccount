@@ -36,6 +36,7 @@ namespace ConsoleBanca
         }
 
         // -------------------- MENU ADMIN --------------------
+        // -------------------- MENU ADMIN --------------------
         static void MenuAdmin()
         {
             Console.Clear();
@@ -67,6 +68,7 @@ namespace ConsoleBanca
                 Console.WriteLine("2️⃣  Approva richieste prestiti");
                 Console.WriteLine("3️⃣  Cambia password admin");
                 Console.WriteLine("4️⃣  Torna al login");
+                Console.WriteLine("5️⃣  Elimina directory cliente");
 
                 Console.Write("\n👉 Scelta: ");
                 string scelta = Console.ReadLine();
@@ -95,8 +97,12 @@ namespace ConsoleBanca
                         break;
 
                     case "4":
-                        Console.WriteLine("👋 Uscita dalla modalità admin...");
+                        EliminaDirectoryCliente(passwordAdmin);
                         return;
+
+                    case "5":
+                        Console.WriteLine("👋 Uscita dalla modalità admin...");
+                        break;
 
                     default:
                         Console.WriteLine("⚠️ Scelta non valida.");
@@ -104,6 +110,61 @@ namespace ConsoleBanca
                 }
             }
         }
+
+
+        static void EliminaDirectoryCliente(string passwordAdmin)
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.WriteLine("                 🗑️ ELIMINAZIONE DIRECTORY CLIENTE 🗑️");
+            Console.WriteLine("═════════════════════════════════════════════════════════════════════");
+            Console.ResetColor();
+
+            string cartellaConti = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                "Conti"
+            );
+
+            Console.Write("👤 Inserisci il nome della directory cliente da eliminare: ");
+            string nomeDir = Console.ReadLine().Trim();
+            string percorso = Path.Combine(cartellaConti, nomeDir);
+
+            if (!Directory.Exists(percorso))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("❌ La directory specificata non esiste.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.Write("🔐 Conferma password admin per eliminare: ");
+            string conferma = Console.ReadLine();
+
+            if (conferma != passwordAdmin)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("❌ Password errata. Operazione annullata.");
+                Console.ResetColor();
+                return;
+            }
+
+            Console.Write($"⚠️ Sei sicuro di voler eliminare TUTTA la directory \"{nomeDir}\"? (S/N): ");
+            string confermaFinale = Console.ReadLine().ToUpper();
+
+            if (confermaFinale == "S")
+            {
+                Directory.Delete(percorso, true);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"✅ Directory \"{nomeDir}\" eliminata con successo.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("❎ Operazione annullata.");
+            }
+        }
+
 
         // -------------------- MENU UTENTE --------------------
         static void MenuUtente(string nomeCompleto)
