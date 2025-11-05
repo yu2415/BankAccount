@@ -76,6 +76,27 @@ namespace ConsoleBanca
             }
         }
 
+        public static ContoBancario CreaNuovoConto(string intestatario, string passwordIniziale)
+        {
+            // Crea numero conto casuale
+            string numeroConto = "IT" + new Random().Next(100000000, 999999999);
+
+            // Crea oggetto conto
+            ContoBancario conto = new ContoBancario(intestatario, numeroConto, passwordIniziale);
+
+            // Salva su file
+            SalvaConto(conto);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"✅ Conto creato con successo per {intestatario}");
+            Console.WriteLine($"🏦 Numero conto: {numeroConto}");
+            Console.WriteLine($"🔐 Password iniziale: {passwordIniziale}");
+            Console.ResetColor();
+
+            return conto;
+        }
+
+
         // Carica un conto bancario da file
         public static ContoBancario CaricaConto(string intestatario, string numeroConto, string password)
         {
